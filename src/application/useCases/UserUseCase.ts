@@ -9,6 +9,11 @@ interface ICreateUserDTO {
     password: string;
 }
 
+interface IUpdateUserDTO {
+  username?: string;
+  password?: string;
+}
+
 @injectable()
 export class UserUseCase {
   constructor(
@@ -42,5 +47,41 @@ export class UserUseCase {
 
   async findById(id: string): Promise<User | null> {
     return this.userRepository.findById(id);
+  }
+
+  async list(): Promise<User[]> {
+    return this.userRepository.findAll();
+  }
+
+  async update(id: string, data: IUpdateUserDTO): Promise<User> {
+    const user = await this.userRepository.findById(id);
+
+    if (!user) {
+      throw new AppError('User not found', 404);
+    }
+
+    if (data.username) {
+      const userWithUsername = await this.userRepository.findByUsername(data.username);
+      if (userWithUsername && userWithUsername.id !== id) {
+        throw new AppError('Username already exists');
+      }
+      user.username = data.username;
+    }
+
+    if (data.password) {
+      user.password = await this.hashProvider.generateHash(data.password);
+    }
+
+    return this.userRepository.save(user);
+  }
+
+  async delete(id: string): Promise<void> {
+    const user = await this.userRepository.findById(id);
+
+    if (!user) {
+      throw new AppError('User not found', 404);
+    }
+
+    await this.userRepository.delete(id);
   }
 } 
