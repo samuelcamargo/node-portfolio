@@ -1,6 +1,7 @@
 import { DataSource } from 'typeorm';
 import { User } from '@/domain/entities/User';
 import 'dotenv/config';
+import bcrypt from 'bcrypt';
 
 export const AppDataSource = new DataSource({
   type: 'sqlite',
@@ -21,7 +22,6 @@ const initializeDatabase = async () => {
     const existingUser = await userRepository.findOne({ where: { username: 'samuelcamargo' } });
     
     if (!existingUser) {
-      const bcrypt = require('bcrypt');
       const hashedPassword = await bcrypt.hash('123456', 10);
       
       await userRepository.save({

@@ -3,13 +3,13 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+    id: string;
 
   @Column()
-  username: string;
+    username: string;
 
   @Column()
-  password: string;
+    password: string;
 
   constructor(props: Omit<User, 'id'>) {
     Object.assign(this, props);
