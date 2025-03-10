@@ -139,9 +139,57 @@ npm install
 
 ## 🧪 Testes
 
+O projeto utiliza Jest para testes unitários. Os testes cobrem:
+
+### Casos de Uso
+- AuthUseCase
+  - Autenticação com credenciais válidas
+  - Rejeição de usuário inválido
+  - Rejeição de senha inválida
+
+- UserUseCase
+  - Criação de usuário
+  - Atualização de usuário
+  - Exclusão de usuário
+  - Listagem de usuários
+  - Validações de negócio
+
+### Comandos
 ```bash
+# Executar todos os testes
 npm test
+
+# Executar testes em modo watch
+npm run test:watch
+
+# Executar testes com cobertura
+npm run test:cov
 ```
+
+### Cobertura
+O projeto mantém uma alta cobertura de testes:
+- Statements: ~100%
+- Branches: ~100%
+- Functions: ~100%
+- Lines: ~100%
+
+### Estrutura dos Testes
+```
+src/
+├── application/
+│   └── useCases/
+│       ├── AuthUseCase.spec.ts
+│       └── UserUseCase.spec.ts
+├── test/
+│   └── setup.ts      # Configuração global dos testes
+└── jest.config.ts    # Configuração do Jest
+```
+
+### Mocks
+Os testes utilizam mocks para:
+- Repositórios
+- Providers (Hash, Token)
+- Dependências externas
 
 ## 📦 Princípios e Padrões
 
@@ -157,6 +205,9 @@ npm test
 - DTO Pattern
 - Factory Pattern
 - Middleware Pattern
+- Test Driven Development (TDD)
+- Mocking
+- Unit Testing
 
 ## 🤝 Contribuindo
 
@@ -165,6 +216,8 @@ npm test
 3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
 4. Push para a branch (`git push origin feature/AmazingFeature`)
 5. Abra um Pull Request
+
+> **Nota**: Certifique-se de adicionar testes para novas funcionalidades
 
 ## 📄 Licença
 
