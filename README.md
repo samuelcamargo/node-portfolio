@@ -101,10 +101,13 @@ npm run lint
 O sistema cria automaticamente um usuário padrão para testes:
 ```json
 {
-  "username": "samuelcamargo",
-  "password": "123456"
+  "username": "string",
+  "password": "string"
 }
 ```
+
+> Nota: Por questões de segurança, as credenciais padrão não são expostas na documentação. 
+> Entre em contato com o administrador do sistema para obter acesso.
 
 ## 🧪 Testes
 
@@ -120,16 +123,6 @@ PORT=3000
 JWT_SECRET=seu_secret_aqui
 DATABASE_PATH=./src/database/database.sqlite
 ```
-
-## �� Princípios e Padrões Aplicados
-
-- Clean Architecture
-- SOLID Principles
-- Repository Pattern
-- Dependency Injection
-- JWT Authentication
-- Error Handling
-- Middleware Pattern
 
 ## 🤝 Contribuindo
 

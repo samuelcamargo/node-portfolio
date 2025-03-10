@@ -27,11 +27,11 @@
         "properties": {
           "username": {
             "type": "string",
-            "example": "samuelcamargo"
+            "example": "string"
           },
           "password": {
             "type": "string",
-            "example": "123456"
+            "example": "string"
           }
         }
       },
