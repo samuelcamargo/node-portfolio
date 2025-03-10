@@ -9,12 +9,23 @@ export const mongoClient = new MongoClient(uri, {
   // Opções adicionais de conexão se necessário
 });
 
-export const initializeDatabase = async () => {
+export async function initializeDatabase() {
   try {
-    await mongoClient.connect();
+    if (!process.env.MONGODB_URI) {
+      throw new Error('MONGODB_URI não está definido nas variáveis de ambiente');
+    }
+
+    const client = await MongoClient.connect(process.env.MONGODB_URI, {
+      ssl: true,
+      tls: true,
+      tlsAllowInvalidCertificates: false,
+      retryWrites: true,
+      w: 'majority'
+    });
+
     console.log('✅ MongoDB conectado com sucesso!');
 
-    const db = mongoClient.db('node-portfolio');
+    const db = client.db('node-portfolio');
     
     // Criar índices
     await db.collection('users').createIndex({ username: 1 }, { unique: true });
@@ -39,4 +50,4 @@ export const initializeDatabase = async () => {
     console.error('❌ Erro ao conectar ao MongoDB:', error);
     throw error;
   }
-}; 
+} 
