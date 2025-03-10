@@ -10,7 +10,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
-    "mongodb:indexes": "ts-node src/infra/database/migrations/createIndexes.ts"
+    "mongodb:indexes": "ts-node src/infra/database/migrations/createIndexes.ts",
+    "start": "node dist/main/server.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
