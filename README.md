@@ -2,6 +2,14 @@
 
 Backend em Node.js do meu portfólio front em Next.js, desenvolvido com TypeScript seguindo princípios SOLID e Clean Architecture.
 
+## 🛠️ Status do Projeto
+
+- ✅ Autenticação JWT
+- ✅ Documentação Swagger
+- ✅ Banco de dados SQLite
+- ✅ Linting e formatação de código
+- ✅ Estrutura Clean Architecture
+
 ## 🚀 Tecnologias
 
 - Node.js
@@ -70,7 +78,7 @@ A documentação da API está disponível através do Swagger UI em:
 
 1. Clone o repositório
 ```bash
-git clone https://github.com/samuelcampos/node-portfolio.git
+git clone https://github.com/samuelcamargo/node-portfolio.git
 cd node-portfolio
 ```
 
@@ -94,6 +102,9 @@ npm run build
 
 # Lint
 npm run lint
+
+# Lint com correção automática
+npm run lint -- --fix
 ```
 
 ## 🔑 Usuário padrão
@@ -120,8 +131,24 @@ npm test
 
 ```env
 PORT=3000
-JWT_SECRET=seu_secret_aqui
+JWT_SECRET=your_secret_here
 DATABASE_PATH=./src/database/database.sqlite
+```
+
+## 🧹 Limpeza e Manutenção
+
+Para manter o projeto organizado:
+
+```bash
+# Remover arquivos de build
+rm -rf dist/
+
+# Limpar cache
+npm cache clean --force
+
+# Remover e reinstalar dependências
+rm -rf node_modules/
+npm install
 ```
 
 ## 🤝 Contribuindo
@@ -142,4 +169,4 @@ Samuel Camargo
 
 ---
 
-⌨️ com ❤️ por [Samuel Camargo](https://github.com/samuelcampos)
+⌨️ com Cafe por [Samuel Camargo](https://github.com/samuelcamargo)
