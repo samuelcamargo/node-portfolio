@@ -121,135 +121,15 @@ npm run lint -- --fix
 
 ```env
 PORT=3000
-JWT_SECRET=your_secret_here
-MONGODB_URI=your_mongodb_uri_here
+JWT_SECRET=your_strong_secret_here
+MONGODB_URI=mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<database>?retryWrites=true&w=majority
 ```
 
 ## 🧹 Manutenção
 
-```bash
-# Remover arquivos de build
-rm -rf dist/
-
-# Limpar cache
-npm cache clean --force
-
-# Remover e reinstalar dependências
-rm -rf node_modules/
-npm install
 ```
 
-## 🗄️ Banco de Dados
+## 🔧 Variáveis de Ambiente
 
-O projeto utiliza MongoDB como banco de dados:
-
-### Collections
-- users
-  - username (string, unique)
-  - password (string, hashed)
-  - _id (ObjectId)
-
-### Índices
-- username: índice único para busca rápida e unicidade
-
-### Usuário Padrão
-O sistema cria automaticamente um usuário inicial:
-- Username: samuelcamargo
-- Password: 123456
-
-## 🧪 Testes
-
-O projeto utiliza Jest para testes unitários. Os testes cobrem:
-
-### Casos de Uso
-- AuthUseCase
-  - Autenticação com credenciais válidas
-  - Rejeição de usuário inválido
-  - Rejeição de senha inválida
-
-- UserUseCase
-  - Criação de usuário
-  - Atualização de usuário
-  - Exclusão de usuário
-  - Listagem de usuários
-  - Validações de negócio
-
-### Comandos
-```bash
-# Executar todos os testes
-npm test
-
-# Executar testes em modo watch
-npm run test:watch
-
-# Executar testes com cobertura
-npm run test:cov
-```
-
-### Cobertura
-O projeto mantém uma alta cobertura de testes:
-- Statements: ~100%
-- Branches: ~100%
-- Functions: ~100%
-- Lines: ~100%
-
-### Estrutura dos Testes
-```
-src/
-├── application/
-│   └── useCases/
-│       ├── AuthUseCase.spec.ts
-│       └── UserUseCase.spec.ts
-├── test/
-│   └── setup.ts      # Configuração global dos testes
-└── jest.config.ts    # Configuração do Jest
-```
-
-### Mocks
-Os testes utilizam mocks para:
-- Repositórios
-- Providers (Hash, Token)
-- Dependências externas
-- MongoDB
-
-## 📦 Princípios e Padrões
-
-- SOLID
-  - Single Responsibility Principle
-  - Open/Closed Principle
-  - Liskov Substitution Principle
-  - Interface Segregation Principle
-  - Dependency Inversion Principle
-- Clean Architecture
-- Dependency Injection
-- Repository Pattern
-- DTO Pattern
-- Factory Pattern
-- Middleware Pattern
-- Test Driven Development (TDD)
-- Mocking
-- Unit Testing
-- Database Abstraction
-- NoSQL Patterns
-
-## 🤝 Contribuindo
-
-1. Faça o fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
-5. Abra um Pull Request
-
-> **Nota**: Certifique-se de adicionar testes para novas funcionalidades
-
-## 📄 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
-## 👨‍💻 Autor
-
-Samuel Camargo
-
----
-
-⌨️ com ☕ por [Samuel Camargo](https://github.com/samuelcamargo)
+> **Importante**: Nunca compartilhe ou commite suas credenciais reais.
+> Use o .env.example como template e mantenha suas credenciais seguras.
