@@ -5,10 +5,11 @@ import bcrypt from 'bcrypt';
 
 export const AppDataSource = new DataSource({
   type: 'sqlite',
-  database: process.env.DATABASE_PATH,
+  database: process.env.DATABASE_PATH || './src/database/database.sqlite',
   entities: [User],
-  synchronize: true, // Em produção, use migrations ao invés de synchronize
-  logging: true
+  synchronize: true, // Isso vai criar as tabelas automaticamente
+  logging: true,
+  dropSchema: false // Não vai dropar o schema existente
 });
 
 // Inicialização do banco de dados
@@ -33,9 +34,8 @@ const initializeDatabase = async () => {
     }
   } catch (error) {
     console.error('❌ Erro ao inicializar o banco de dados:', error);
+    throw error; // Propaga o erro para ser tratado no servidor
   }
 };
 
-initializeDatabase();
-
-export { User }; 
+export { User, initializeDatabase }; 

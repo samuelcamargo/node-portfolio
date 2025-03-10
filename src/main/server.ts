@@ -5,7 +5,7 @@ import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import { router } from '@/infra/http/routes';
 import { swaggerSpec } from '@/config/swagger';
-import { AppDataSource } from '@/database';
+import { initializeDatabase } from '@/database';
 
 const app = express();
 
@@ -40,7 +40,7 @@ const port = process.env.PORT || 3000; // Adicionando fallback para a porta
 
 const startServer = async () => {
   try {
-    await AppDataSource.initialize();
+    await initializeDatabase();
     
     app.listen(port, () => {
       console.log(`
@@ -54,6 +54,7 @@ const startServer = async () => {
     });
   } catch (error) {
     console.error('❌ Erro ao iniciar o servidor:', error);
+    process.exit(1); // Encerra o processo em caso de erro
   }
 };
 
