@@ -1,14 +1,40 @@
 # API de Autenticação - Node Portfolio
 
-Backend em Node.js do meu portfólio front em Next.js, desenvolvido com TypeScript seguindo princípios SOLID e Clean Architecture.
+Backend em Node.js do meu portfólio, desenvolvido com TypeScript seguindo princípios SOLID e Clean Architecture.
 
-## 🛠️ Status do Projeto
+## 🏗️ Arquitetura
 
-- ✅ Autenticação JWT
-- ✅ Documentação Swagger
-- ✅ Banco de dados SQLite
-- ✅ Linting e formatação de código
-- ✅ Estrutura Clean Architecture
+O projeto segue os princípios da Clean Architecture e SOLID, organizado em camadas:
+
+```
+src/
+├── application/           # Casos de uso da aplicação
+│   ├── dtos/             # Data Transfer Objects
+│   ├── interfaces/       # Interfaces dos casos de uso
+│   └── useCases/        # Implementação dos casos de uso
+│
+├── domain/               # Regras de negócio e entidades
+│   ├── entities/        # Entidades do domínio
+│   ├── interfaces/      # Interfaces do domínio
+│   └── repositories/    # Interfaces dos repositórios
+│
+├── infra/               # Implementações de infraestrutura
+│   ├── database/        # Configurações e implementações do banco
+│   │   └── repositories/  # Implementações dos repositórios
+│   ├── http/           # Implementações HTTP
+│   │   ├── controllers/  # Controllers
+│   │   ├── middlewares/ # Middlewares
+│   │   └── routes/     # Rotas
+│   └── providers/      # Provedores externos (Hash, Token, etc)
+│
+├── shared/             # Código compartilhado
+│   ├── container/      # Configuração de injeção de dependência
+│   ├── errors/        # Tratamento de erros
+│   └── utils/         # Utilitários
+│
+└── main/              # Ponto de entrada da aplicação
+    └── server.ts
+```
 
 ## 🚀 Tecnologias
 
@@ -21,41 +47,18 @@ Backend em Node.js do meu portfólio front em Next.js, desenvolvido com TypeScri
 - Swagger
 - Jest
 - ESLint
-
-## 📁 Arquitetura
-
-O projeto segue os princípios da Clean Architecture e SOLID:
-
-```
-src/
-   ├── domain/              # Regras de negócio da aplicação
-   │   ├── entities/        # Entidades do domínio
-   │   └── repositories/    # Interfaces dos repositórios
-   │
-   ├── infra/              # Implementações de infraestrutura
-   │   ├── database/       # Configurações e repositórios do banco
-   │   └── http/          # Controllers, middlewares e rotas
-   │       ├── controllers/
-   │       ├── middlewares/
-   │       └── routes/
-   │
-   ├── config/            # Configurações da aplicação
-   │   └── swagger.ts     # Configuração do Swagger
-   │
-   ├── types/            # Definições de tipos
-   │   └── swagger.d.ts
-   │
-   └── main/             # Ponto de entrada da aplicação
-       └── server.ts
-```
+- TSyringe (Injeção de Dependência)
 
 ## 🔐 Funcionalidades
 
 - Autenticação de usuários com JWT
-- Rota protegida de exemplo
-- Documentação interativa com Swagger
+- Injeção de Dependência com TSyringe
+- Tratamento de Erros Centralizado
+- Documentação Swagger
 - Validações de dados
 - Criptografia de senha com bcrypt
+- Middleware de Autenticação
+- Rotas Protegidas
 
 ## 📝 Documentação
 
@@ -69,10 +72,15 @@ A documentação da API está disponível através do Swagger UI em:
   - Body: `{ "username": "string", "password": "string" }`
   - Response: `{ "token": "string", "expire_in": "number" }`
 
+### Usuários
+- `POST /users` - Criar novo usuário
+  - Body: `{ "username": "string", "password": "string" }`
+
 ### Rotas Protegidas
-- `GET /sobre` - Rota protegida de exemplo (requer token JWT)
+- `GET /users/profile` - Obter perfil do usuário (requer token JWT)
   - Header: `Authorization: Bearer {token}`
-  - Response: `{ "message": "ok" }`
+- `GET /sobre` - Rota protegida de exemplo
+  - Header: `Authorization: Bearer {token}`
 
 ## 💻 Como executar
 
@@ -107,26 +115,6 @@ npm run lint
 npm run lint -- --fix
 ```
 
-## 🔑 Usuário padrão
-
-O sistema cria automaticamente um usuário padrão para testes:
-```json
-{
-  "username": "string",
-  "password": "string"
-}
-```
-
-> Nota: Por questões de segurança, as credenciais padrão não são expostas na documentação. 
-> Entre em contato com o administrador do sistema para obter acesso.
-
-## 🧪 Testes
-
-Para executar os testes:
-```bash
-npm test
-```
-
 ## 🔧 Variáveis de Ambiente
 
 ```env
@@ -135,9 +123,7 @@ JWT_SECRET=your_secret_here
 DATABASE_PATH=./src/database/database.sqlite
 ```
 
-## 🧹 Limpeza e Manutenção
-
-Para manter o projeto organizado:
+## 🧹 Manutenção
 
 ```bash
 # Remover arquivos de build
@@ -150,6 +136,27 @@ npm cache clean --force
 rm -rf node_modules/
 npm install
 ```
+
+## 🧪 Testes
+
+```bash
+npm test
+```
+
+## 📦 Princípios e Padrões
+
+- SOLID
+  - Single Responsibility Principle
+  - Open/Closed Principle
+  - Liskov Substitution Principle
+  - Interface Segregation Principle
+  - Dependency Inversion Principle
+- Clean Architecture
+- Dependency Injection
+- Repository Pattern
+- DTO Pattern
+- Factory Pattern
+- Middleware Pattern
 
 ## 🤝 Contribuindo
 
@@ -169,4 +176,4 @@ Samuel Camargo
 
 ---
 
-⌨️ com Cafe por [Samuel Camargo](https://github.com/samuelcamargo)
+⌨️ com ☕ por [Samuel Camargo](https://github.com/samuelcamargo)

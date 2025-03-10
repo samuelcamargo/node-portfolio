@@ -1,13 +1,28 @@
 import 'reflect-metadata';
 import 'dotenv/config';
-import express from 'express';
+import 'express-async-errors';
+import express, { Express } from 'express';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import { router } from '@/infra/http/routes';
 import { swaggerSpec } from '@/config/swagger';
-import { initializeDatabase } from '@/database';
+import { initializeDatabase } from '@/infra/database';
+import { errorMiddleware } from '@/infra/http/middlewares/errorMiddleware';
 
-const app = express();
+// Importa o container de injeção de dependência
+import '@/shared/container';
+
+// Adicionar os handlers de erro no início
+process.on('unhandledRejection', (error: Error) => {
+  console.error('🚨 Unhandled Rejection:', error);
+});
+
+process.on('uncaughtException', (error: Error) => {
+  console.error('🚨 Uncaught Exception:', error);
+  process.exit(1);
+});
+
+const app: Express = express();
 
 // Configuração do CORS
 app.use(cors({
@@ -36,9 +51,12 @@ app.use(
 
 app.use(router);
 
+// Middleware de erro deve ser o último
+app.use(errorMiddleware);
+
 const port = process.env.PORT || 3000; // Adicionando fallback para a porta
 
-const startServer = async () => {
+const startServer = async (): Promise<void> => {
   try {
     await initializeDatabase();
     

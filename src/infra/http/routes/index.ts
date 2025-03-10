@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import { AuthController } from '../controllers/AuthController';
 import { authMiddleware } from '../middlewares/authMiddleware';
+import { authRoutes } from './auth.routes';
+import { userRoutes } from './user.routes';
 
 const router = Router();
 const authController = new AuthController();
@@ -67,5 +69,8 @@ router.post('/auth', authController.authenticate);
 router.get('/sobre', authMiddleware, (_request, response) => {
   return response.status(200).json({ message: 'ok' });
 });
+
+router.use('/auth', authRoutes);
+router.use('/users', userRoutes);
 
 export { router }; 

@@ -1,23 +1,32 @@
 import { Request, Response, NextFunction } from 'express';
-import { verify } from 'jsonwebtoken';
+import { container } from 'tsyringe';
+import { ITokenProvider } from '@/infra/providers/TokenProvider/ITokenProvider';
+import { AppError } from '@/shared/errors/AppError';
 
-export function authMiddleware(
+export async function authMiddleware(
   request: Request,
-  response: Response,
+  _response: Response,
   next: NextFunction
-) {
-  const authHeader = request.headers.authorization;
-
-  if (!authHeader) {
-    return response.status(401).json({ error: 'Token não fornecido' });
-  }
-
-  const [, token] = authHeader.split(' ');
-
+): Promise<void> {
   try {
-    verify(token, process.env.JWT_SECRET as string);
+    const authHeader = request.headers.authorization;
+
+    if (!authHeader) {
+      throw new AppError('Token não fornecido', 401);
+    }
+
+    const [, token] = authHeader.split(' ');
+
+    const tokenProvider = container.resolve<ITokenProvider>('TokenProvider');
+        
+    const userId = await tokenProvider.verifyToken(token);
+
+    request.user = {
+      id: userId
+    };
+
     return next();
-  } catch {
-    return response.status(401).json({ error: 'Token inválido' });
+  } catch (error) {
+    next(error);
   }
 } 

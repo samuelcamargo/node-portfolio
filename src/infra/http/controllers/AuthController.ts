@@ -1,36 +1,26 @@
-import { Request, Response } from 'express';
-import { sign } from 'jsonwebtoken';
-import { compare } from 'bcrypt';
-import { UserRepository } from '@/infra/database/repositories/UserRepository';
+import { Request, Response, NextFunction } from 'express';
+import { container } from 'tsyringe';
+import { AuthUseCase } from '@/application/useCases/AuthUseCase';
 
 export class AuthController {
-  async authenticate(request: Request, response: Response): Promise<Response> {
-    const { username, password } = request.body;
+  async authenticate(
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ): Promise<Response | void> {
+    try {
+      const { username, password } = request.body;
 
-    const userRepository = new UserRepository();
-    const user = await userRepository.findByUsername(username);
+      const authUseCase = container.resolve(AuthUseCase);
 
-    if (!user) {
-      return response.status(401).json({ error: 'Usuário não encontrado' });
+      const auth = await authUseCase.execute({
+        username,
+        password
+      });
+
+      return response.json(auth);
+    } catch (error) {
+      next(error);
     }
-
-    const passwordMatch = await compare(password, user.password);
-
-    if (!passwordMatch) {
-      return response.status(401).json({ error: 'Senha incorreta' });
-    }
-
-    const token = sign({}, process.env.JWT_SECRET as string, {
-      subject: user.id,
-      expiresIn: '1d'
-    });
-
-    const now = new Date();
-    const expire_in = new Date(now.getTime() + 24 * 60 * 60 * 1000);
-
-    return response.json({
-      token,
-      expire_in: expire_in.getTime()
-    });
   }
 } 
