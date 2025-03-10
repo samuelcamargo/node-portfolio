@@ -41,8 +41,7 @@ src/
 - Node.js
 - TypeScript
 - Express
-- SQLite
-- TypeORM
+- MongoDB
 - JWT (JSON Web Token)
 - Swagger
 - Jest
@@ -105,6 +104,9 @@ cp .env.example .env
 # Desenvolvimento
 npm run dev
 
+# Criar índices do MongoDB
+npm run mongodb:indexes
+
 # Build
 npm run build
 
@@ -120,7 +122,7 @@ npm run lint -- --fix
 ```env
 PORT=3000
 JWT_SECRET=your_secret_here
-DATABASE_PATH=./src/database/database.sqlite
+MONGODB_URI=your_mongodb_uri_here
 ```
 
 ## 🧹 Manutenção
@@ -136,6 +138,24 @@ npm cache clean --force
 rm -rf node_modules/
 npm install
 ```
+
+## 🗄️ Banco de Dados
+
+O projeto utiliza MongoDB como banco de dados:
+
+### Collections
+- users
+  - username (string, unique)
+  - password (string, hashed)
+  - _id (ObjectId)
+
+### Índices
+- username: índice único para busca rápida e unicidade
+
+### Usuário Padrão
+O sistema cria automaticamente um usuário inicial:
+- Username: samuelcamargo
+- Password: 123456
 
 ## 🧪 Testes
 
@@ -190,6 +210,7 @@ Os testes utilizam mocks para:
 - Repositórios
 - Providers (Hash, Token)
 - Dependências externas
+- MongoDB
 
 ## 📦 Princípios e Padrões
 
@@ -208,6 +229,8 @@ Os testes utilizam mocks para:
 - Test Driven Development (TDD)
 - Mocking
 - Unit Testing
+- Database Abstraction
+- NoSQL Patterns
 
 ## 🤝 Contribuindo
 

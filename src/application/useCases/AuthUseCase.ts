@@ -31,6 +31,10 @@ export class AuthUseCase {
       throw new AppError('Usuário ou senha inválidos', 401);
     }
 
+    if (!user.id) {
+      throw new AppError('Erro interno: ID do usuário não encontrado', 500);
+    }
+
     const token = await this.tokenProvider.generateToken(user.id);
     const expire_in = Date.now() + 24 * 60 * 60 * 1000; // 24 horas
 

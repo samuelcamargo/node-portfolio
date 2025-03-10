@@ -1,38 +1,42 @@
-import { DataSource } from 'typeorm';
-import { User } from '@/domain/entities/User';
+import { MongoClient } from 'mongodb';
 import 'dotenv/config';
 import bcrypt from 'bcrypt';
 
-export const AppDataSource = new DataSource({
-  type: 'sqlite',
-  database: process.env.DATABASE_PATH || './src/database/database.sqlite',
-  entities: [User],
-  synchronize: true,
-  logging: true
+// Usando a URI do .env e adicionando o nome do cluster e do banco
+const uri = process.env.MONGODB_URI || 'mongodb+srv://samuelcamargo1:E9c6tu9ceQigcwpR@cluster0.mongodb.net/node-portfolio?retryWrites=true&w=majority';
+
+export const mongoClient = new MongoClient(uri, {
+  // Opções adicionais de conexão se necessário
 });
 
-// Inicialização do banco de dados
 export const initializeDatabase = async () => {
   try {
-    await AppDataSource.initialize();
-    console.log('✅ Banco de dados inicializado com sucesso!');
-        
+    await mongoClient.connect();
+    console.log('✅ MongoDB conectado com sucesso!');
+
+    const db = mongoClient.db('node-portfolio');
+    
+    // Criar índices
+    await db.collection('users').createIndex({ username: 1 }, { unique: true });
+
     // Criar usuário inicial se não existir
-    const userRepository = AppDataSource.getRepository(User);
-    const existingUser = await userRepository.findOne({ where: { username: 'samuelcamargo' } });
-        
+    const existingUser = await db.collection('users').findOne({ 
+      username: 'samuelcamargo' 
+    });
+
     if (!existingUser) {
       const hashedPassword = await bcrypt.hash('123456', 10);
-            
-      await userRepository.save({
+
+      await db.collection('users').insertOne({
         username: 'samuelcamargo',
         password: hashedPassword
       });
-            
+
       console.log('👤 Usuário inicial criado com sucesso!');
     }
+
   } catch (error) {
-    console.error('❌ Erro ao inicializar o banco de dados:', error);
+    console.error('❌ Erro ao conectar ao MongoDB:', error);
     throw error;
   }
 }; 
