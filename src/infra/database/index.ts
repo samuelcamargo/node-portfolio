@@ -18,9 +18,14 @@ export async function initializeDatabase() {
     const client = await MongoClient.connect(process.env.MONGODB_URI, {
       ssl: true,
       tls: true,
-      tlsAllowInvalidCertificates: false,
+      tlsAllowInvalidCertificates: true,
       retryWrites: true,
-      w: 'majority'
+      w: 'majority',
+      serverApi: {
+        version: '1',
+        strict: true,
+        deprecationErrors: true
+      }
     });
 
     console.log('✅ MongoDB conectado com sucesso!');
@@ -45,6 +50,8 @@ export async function initializeDatabase() {
 
       console.log('👤 Usuário inicial criado com sucesso!');
     }
+
+    return client;
 
   } catch (error) {
     console.error('❌ Erro ao conectar ao MongoDB:', error);
