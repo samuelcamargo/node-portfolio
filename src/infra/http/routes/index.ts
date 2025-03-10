@@ -64,7 +64,7 @@ router.post('/auth', authController.authenticate);
  *                   type: string
  *                   example: ok
  */
-router.get('/sobre', authMiddleware, (request, response) => {
+router.get('/sobre', authMiddleware, (_request, response) => {
   return response.status(200).json({ message: 'ok' });
 });
 
