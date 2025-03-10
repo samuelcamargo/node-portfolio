@@ -1,10 +1,11 @@
+import 'module-alias/register';
 import 'reflect-metadata';
 import 'dotenv/config';
 import 'express-async-errors';
 import express, { Express } from 'express';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
-import { router } from '@/infra/http/routes';
+import { router } from '../infra/http/routes';
 import { swaggerSpec } from '@/config/swagger';
 import { initializeDatabase } from '@/infra/database';
 import { errorMiddleware } from '@/infra/http/middlewares/errorMiddleware';
