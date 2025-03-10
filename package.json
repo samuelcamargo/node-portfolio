@@ -5,13 +5,13 @@
   "license": "MIT",
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/main/server.ts",
-    "build": "tsc",
+    "build": "tsc && tsc-alias",
     "lint": "eslint . --ext .ts",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "mongodb:indexes": "ts-node src/infra/database/migrations/createIndexes.ts",
-    "start": "node -r tsconfig-paths/register dist/main/server.js"
+    "start": "node dist/main/server.js"
   },
   "dependencies": {
     "@types/bcrypt": "^5.0.2",
@@ -30,6 +30,7 @@
     "reflect-metadata": "^0.1.14",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^4.6.3",
+    "tsc-alias": "^1.8.11",
     "tsconfig-paths": "^4.2.0",
     "tsyringe": "^4.8.0",
     "typescript": "^5.1.6"
