@@ -58,6 +58,11 @@ src/
 - Criptografia de senha com bcrypt
 - Middleware de Autenticação
 - Rotas Protegidas
+- Dashboard com estatísticas de habilidades e certificados
+  - Visualização por categoria e nível
+  - Gráfico radar para análise de competências
+  - Timeline de certificações
+  - Resumo consolidado de dados
 
 ## 📝 Documentação
 
@@ -77,6 +82,22 @@ A documentação da API está disponível através do Swagger UI em:
 - `GET /users/profile` - Obter perfil (protegido)
 - `PUT /users/:id` - Atualizar usuário (protegido)
 - `DELETE /users/:id` - Remover usuário (protegido)
+
+### Dashboard (Todos protegidos por JWT)
+- `GET /dashboard/skills/by-category` - Habilidades agrupadas por categoria
+  - Response: `{ "categories": ["Frontend", "Backend", ...], "counts": [8, 10, ...] }`
+- `GET /dashboard/skills/by-level` - Habilidades agrupadas por nível
+  - Response: `{ "levels": ["Básico", "Intermediário", "Avançado"], "counts": [10, 12, 8] }`
+- `GET /dashboard/skills/radar-data` - Dados para gráfico radar de habilidades
+  - Response: `{ "categories": [...], "basicCounts": [...], "intermediateCounts": [...], "advancedCounts": [...] }`
+- `GET /dashboard/certificates/by-category` - Certificados agrupados por categoria
+  - Response: `{ "categories": ["Web Development", "Cloud", ...], "counts": [12, 5, ...] }`
+- `GET /dashboard/certificates/by-platform` - Certificados agrupados por plataforma
+  - Response: `{ "platforms": ["Udemy", "Coursera", ...], "counts": [8, 5, ...] }`
+- `GET /dashboard/certificates/timeline` - Timeline de certificados
+  - Response: `{ "timeline": ["2020-01", "2020-06", ...], "counts": [2, 3, ...] }`
+- `GET /dashboard/summary` - Resumo geral para o dashboard
+  - Response: Estatísticas consolidadas com totais, top habilidades e certificados recentes
 
 > Para rotas protegidas, inclua o header: `Authorization: Bearer {token}`
 

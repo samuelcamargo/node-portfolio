@@ -8,6 +8,7 @@ import { languageRoutes } from './language.routes';
 import { educationRoutes } from './education.routes';
 import { experienceRoutes } from './experience.routes';
 import { certificateRoutes } from './certificate.routes';
+import { dashboardRoutes } from './dashboard.routes';
 
 const router = Router();
 const authController = new AuthController();
@@ -82,5 +83,6 @@ router.use('/languages', languageRoutes);
 router.use('/education', educationRoutes);
 router.use('/experiences', experienceRoutes);
 router.use('/certificates', certificateRoutes);
+router.use('/dashboard', dashboardRoutes);
 
 export { router }; 
