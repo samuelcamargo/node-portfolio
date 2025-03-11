@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import { SkillUseCase } from '@/application/useCases/SkillUseCase';
 import { CertificateUseCase } from '@/application/useCases/CertificateUseCase';
+import { EducationUseCase } from '@/application/useCases/EducationUseCase';
+import { ExperienceUseCase } from '@/application/useCases/ExperienceUseCase';
 
 export class DashboardController {
   async getSkillsByCategory(_request: Request, response: Response): Promise<Response> {
@@ -125,16 +127,102 @@ export class DashboardController {
     });
   }
 
+  async getExperienceTimeline(_request: Request, response: Response): Promise<Response> {
+    const experienceUseCase = container.resolve(ExperienceUseCase);
+    const experiences = await experienceUseCase.list();
+    
+    // Organizando por período (agrupando por ano de início)
+    const experiencesWithYear = experiences.map(exp => {
+      const startYear = exp.period.split(' - ')[0];
+      return { ...exp, startYear };
+    });
+    
+    // Ordenando por ano de início e agrupando
+    const experiencesByYear = [...new Set(experiencesWithYear.map(exp => exp.startYear))]
+      .sort()
+      .map(year => {
+        const count = experiencesWithYear.filter(exp => exp.startYear === year).length;
+        return { year, count };
+      });
+    
+    return response.json({
+      years: experiencesByYear.map(e => e.year),
+      counts: experiencesByYear.map(e => e.count)
+    });
+  }
+
+  async getExperienceByCompany(_request: Request, response: Response): Promise<Response> {
+    const experienceUseCase = container.resolve(ExperienceUseCase);
+    const experiences = await experienceUseCase.list();
+    
+    // Agrupando por empresa
+    const companies = [...new Set(experiences.map(exp => exp.company))];
+    const counts = companies.map(company => 
+      experiences.filter(exp => exp.company === company).length
+    );
+    
+    return response.json({
+      companies,
+      counts
+    });
+  }
+
+  async getEducationByInstitution(_request: Request, response: Response): Promise<Response> {
+    const educationUseCase = container.resolve(EducationUseCase);
+    const educations = await educationUseCase.list();
+    
+    // Agrupando por instituição
+    const institutions = [...new Set(educations.map(edu => edu.institution))];
+    const counts = institutions.map(institution => 
+      educations.filter(edu => edu.institution === institution).length
+    );
+    
+    return response.json({
+      institutions,
+      counts
+    });
+  }
+
+  async getEducationTimeline(_request: Request, response: Response): Promise<Response> {
+    const educationUseCase = container.resolve(EducationUseCase);
+    const educations = await educationUseCase.list();
+    
+    // Organizando por período (agrupando por ano de início)
+    const educationsWithYear = educations.map(edu => {
+      const startYear = edu.period.split(' - ')[0];
+      return { ...edu, startYear };
+    });
+    
+    // Ordenando por ano de início e agrupando
+    const educationsByYear = [...new Set(educationsWithYear.map(edu => edu.startYear))]
+      .sort()
+      .map(year => {
+        const count = educationsWithYear.filter(edu => edu.startYear === year).length;
+        return { year, count };
+      });
+    
+    return response.json({
+      years: educationsByYear.map(e => e.year),
+      counts: educationsByYear.map(e => e.count)
+    });
+  }
+
   async getDashboardSummary(_request: Request, response: Response): Promise<Response> {
     const skillUseCase = container.resolve(SkillUseCase);
     const certificateUseCase = container.resolve(CertificateUseCase);
+    const educationUseCase = container.resolve(EducationUseCase);
+    const experienceUseCase = container.resolve(ExperienceUseCase);
     
     const skills = await skillUseCase.list();
     const certificates = await certificateUseCase.list();
+    const educations = await educationUseCase.list();
+    const experiences = await experienceUseCase.list();
     
     // Totais
     const totalSkills = skills.length;
     const totalCertificates = certificates.length;
+    const totalEducations = educations.length;
+    const totalExperiences = experiences.length;
     
     // Habilidades por nível
     const levels = ['Básico', 'Intermediário', 'Avançado'];
@@ -167,9 +255,39 @@ export class DashboardController {
       .sort((a, b) => b.count - a.count)
       .slice(0, 2);
     
+    // Experiências recentes (últimas 2)
+    const recentExperiences = experiences
+      .sort((a, b) => {
+        const aStartYear = parseInt(a.period.split(' - ')[0]);
+        const bStartYear = parseInt(b.period.split(' - ')[0]);
+        return bStartYear - aStartYear;
+      })
+      .slice(0, 2)
+      .map(exp => ({
+        role: exp.role,
+        company: exp.company,
+        period: exp.period
+      }));
+    
+    // Educação - últimas formações (2)
+    const recentEducations = educations
+      .sort((a, b) => {
+        const aStartYear = parseInt(a.period.split(' - ')[0]);
+        const bStartYear = parseInt(b.period.split(' - ')[0]);
+        return bStartYear - aStartYear;
+      })
+      .slice(0, 2)
+      .map(edu => ({
+        title: edu.title,
+        institution: edu.institution,
+        period: edu.period
+      }));
+    
     return response.json({
       totalSkills,
       totalCertificates,
+      totalEducations,
+      totalExperiences,
       skillsByLevel: {
         labels: levels,
         data: skillsByLevel
@@ -179,7 +297,9 @@ export class DashboardController {
         data: certsByCategory
       },
       recentCertificates,
-      topSkillCategories
+      topSkillCategories,
+      recentExperiences,
+      recentEducations
     });
   }
 } 

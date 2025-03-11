@@ -97,6 +97,66 @@ dashboardRoutes.get('/certificates/timeline', authMiddleware, dashboardControlle
 
 /**
  * @swagger
+ * /dashboard/experiences/timeline:
+ *   get:
+ *     tags:
+ *       - Dashboard
+ *     summary: Obter timeline de experiências profissionais
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Timeline de experiências
+ */
+dashboardRoutes.get('/experiences/timeline', authMiddleware, dashboardController.getExperienceTimeline);
+
+/**
+ * @swagger
+ * /dashboard/experiences/by-company:
+ *   get:
+ *     tags:
+ *       - Dashboard
+ *     summary: Obter experiências agrupadas por empresa
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Experiências agrupadas por empresa
+ */
+dashboardRoutes.get('/experiences/by-company', authMiddleware, dashboardController.getExperienceByCompany);
+
+/**
+ * @swagger
+ * /dashboard/education/by-institution:
+ *   get:
+ *     tags:
+ *       - Dashboard
+ *     summary: Obter formações agrupadas por instituição
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Formações agrupadas por instituição
+ */
+dashboardRoutes.get('/education/by-institution', authMiddleware, dashboardController.getEducationByInstitution);
+
+/**
+ * @swagger
+ * /dashboard/education/timeline:
+ *   get:
+ *     tags:
+ *       - Dashboard
+ *     summary: Obter timeline de formação acadêmica
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Timeline de formação acadêmica
+ */
+dashboardRoutes.get('/education/timeline', authMiddleware, dashboardController.getEducationTimeline);
+
+/**
+ * @swagger
  * /dashboard/summary:
  *   get:
  *     tags:

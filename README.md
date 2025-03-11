@@ -62,7 +62,9 @@ src/
   - Visualização por categoria e nível
   - Gráfico radar para análise de competências
   - Timeline de certificações
-  - Resumo consolidado de dados
+  - Análise de experiências profissionais por empresa e período
+  - Visualização de formação acadêmica por instituição
+  - Resumo consolidado de dados incluindo totais, últimas experiências e formações
 
 ## 📝 Documentação
 
@@ -96,8 +98,16 @@ A documentação da API está disponível através do Swagger UI em:
   - Response: `{ "platforms": ["Udemy", "Coursera", ...], "counts": [8, 5, ...] }`
 - `GET /dashboard/certificates/timeline` - Timeline de certificados
   - Response: `{ "timeline": ["2020-01", "2020-06", ...], "counts": [2, 3, ...] }`
+- `GET /dashboard/experiences/timeline` - Timeline de experiências profissionais
+  - Response: `{ "years": ["2018", "2020", ...], "counts": [1, 2, ...] }`
+- `GET /dashboard/experiences/by-company` - Experiências agrupadas por empresa
+  - Response: `{ "companies": ["Empresa A", "Empresa B", ...], "counts": [1, 2, ...] }`
+- `GET /dashboard/education/timeline` - Timeline de formação acadêmica
+  - Response: `{ "years": ["2010", "2015", ...], "counts": [1, 1, ...] }`
+- `GET /dashboard/education/by-institution` - Formações agrupadas por instituição
+  - Response: `{ "institutions": ["Universidade A", "Faculdade B", ...], "counts": [2, 1, ...] }`
 - `GET /dashboard/summary` - Resumo geral para o dashboard
-  - Response: Estatísticas consolidadas com totais, top habilidades e certificados recentes
+  - Response: Estatísticas consolidadas incluindo totais, top habilidades, certificados, experiências e educação recentes
 
 > Para rotas protegidas, inclua o header: `Authorization: Bearer {token}`
 
