@@ -17,9 +17,6 @@ const options = {
         },
       },
     },
-    security: [{
-      bearerAuth: [],
-    }],
   },
   apis: ['./src/infra/http/routes/*.ts'],
 };

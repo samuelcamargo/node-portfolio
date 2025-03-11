@@ -3,6 +3,11 @@ import { AuthController } from '../controllers/AuthController';
 import { authMiddleware } from '../middlewares/authMiddleware';
 import { authRoutes } from './auth.routes';
 import { userRoutes } from './user.routes';
+import { skillRoutes } from './skill.routes';
+import { languageRoutes } from './language.routes';
+import { educationRoutes } from './education.routes';
+import { experienceRoutes } from './experience.routes';
+import { certificateRoutes } from './certificate.routes';
 
 const router = Router();
 const authController = new AuthController();
@@ -72,5 +77,10 @@ router.get('/sobre', authMiddleware, (_request, response) => {
 
 router.use('/auth', authRoutes);
 router.use('/users', userRoutes);
+router.use('/skills', skillRoutes);
+router.use('/languages', languageRoutes);
+router.use('/education', educationRoutes);
+router.use('/experiences', experienceRoutes);
+router.use('/certificates', certificateRoutes);
 
 export { router }; 
